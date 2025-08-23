@@ -9,6 +9,10 @@ yay -S iio-sensor-proxy iio-hyprland
 
 Copy the scripts to a location of your choice, for example:
 `~/.config/hypr/scripts/`
+Make the files executable:
+```sh
+chmod +x ~/.config/hypr/scripts/rotate-screen.sh ~/.config/hypr/scripts/toggle-rotation.sh
+```
 
 Then add `rotate-screen.sh` to hyprland execs:
 ```sh
