@@ -28,6 +28,7 @@ if [[ $TOGGLE_FILE_CONTENT -eq "1" ]]; then
   fi
 
   hyprctl keyword monitor "$MONITOR,$MODE,$POSITION,$SCALE,transform,$TRANSFORM"
+  hyprctl keyword input:touchdevice:transform $TRANSFORM
   else
     echo "disabled"
   fi
