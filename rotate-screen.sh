@@ -12,6 +12,9 @@ TOGGLE_FILE="$HOME/.config/hypr/rotation-toggle"
 [ -f "$TOGGLE_FILE" ] || echo "1" > "$TOGGLE_FILE"
 
 monitor-sensor | while read -r line; do
+TOGGLE_FILE_CONTENT=$(<$TOGGLE_FILE)
+if [[ $TOGGLE_FILE_CONTENT -eq "1" ]]; then
+  echo "enabled"
   if [[ $line == *"orientation changed: normal"* ]]; then
     TRANSFORM=0
   elif [[ $line == *"orientation changed: right-up"* ]]; then
@@ -25,4 +28,8 @@ monitor-sensor | while read -r line; do
   fi
 
   hyprctl keyword monitor "$MONITOR,$MODE,$POSITION,$SCALE,transform,$TRANSFORM"
+  hyprctl keyword input:touchdevice:transform $TRANSFORM
+  else
+    echo "disabled"
+  fi
 done
