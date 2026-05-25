@@ -26,5 +26,6 @@ monitor-sensor | while read -r line; do
 
   [ "$(cat "$TOGGLE_FILE")" -eq 0 ] && continue
 
-  hyprctl eval "monitor = $MONITOR,$MODE,$POSITION,$SCALE,transform,$TRANSFORM"
+  HYPRLAND_INSTANCE_SIGNATURE=$(ls -1t "$XDG_RUNTIME_DIR/hypr" | head -1) \
+    hyprctl eval "monitor = $MONITOR,$MODE,$POSITION,$SCALE,transform,$TRANSFORM"
 done
