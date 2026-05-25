@@ -4,12 +4,29 @@ MONITOR="${MONITOR:-eDP-1}"
 MODE="${MODE:-preferred}"
 POSITION="${POSITION:-auto}"
 SCALE="${SCALE:-1}"
+TOUCH_DEVICES="${TOUCH_DEVICES:-}"
 
 # File to store rotation toggle state (0 = off, 1 = on)
 TOGGLE_FILE="$HOME/.config/hypr/rotation-toggle"
 
 # Ensure toggle file exists, default to enabled (1)
 [ -f "$TOGGLE_FILE" ] || echo "1" > "$TOGGLE_FILE"
+
+rotate() {
+  local transform="$1"
+  local inst_sig
+
+  inst_sig=$(ls -1t "$XDG_RUNTIME_DIR/hypr" | head -1)
+  export HYPRLAND_INSTANCE_SIGNATURE="$inst_sig"
+
+  hyprctl eval "hl.monitor({ output = \"$MONITOR\", mode = \"$MODE\", position = \"$POSITION\", scale = \"$SCALE\", transform = $transform })"
+
+  # Rotate touch devices (semicolon-separated list)
+  IFS=';' read -ra devs <<< "$TOUCH_DEVICES"
+  for dev in "${devs[@]}"; do
+    [ -n "$dev" ] && hyprctl eval "hl.device({name = \"$dev\"}, {transform = $transform})"
+  done
+}
 
 monitor-sensor | while read -r line; do
   if [[ $line == *"orientation changed: normal"* ]]; then
@@ -26,6 +43,5 @@ monitor-sensor | while read -r line; do
 
   [ "$(cat "$TOGGLE_FILE")" -eq 0 ] && continue
 
-  HYPRLAND_INSTANCE_SIGNATURE=$(ls -1t "$XDG_RUNTIME_DIR/hypr" | head -1) \
-    hyprctl eval "hl.monitor({ output = \"$MONITOR\", mode = \"$MODE\", position = \"$POSITION\", scale = \"$SCALE\", transform = $TRANSFORM })"
+  rotate "$TRANSFORM"
 done
