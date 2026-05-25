@@ -24,7 +24,7 @@ rotate() {
   # Rotate touch devices (semicolon-separated list)
   IFS=';' read -ra devs <<< "$TOUCH_DEVICES"
   for dev in "${devs[@]}"; do
-    [ -n "$dev" ] && hyprctl eval "hl.device({name = \"$dev\"}, {transform = $transform})"
+    [ -n "$dev" ] && hyprctl eval "hl.device({name = \"$dev\"}, {output = \"$MONITOR\", transform = $transform})"
   done
 }
 
