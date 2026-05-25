@@ -24,5 +24,7 @@ monitor-sensor | while read -r line; do
     continue
   fi
 
+  [ "$(cat "$TOGGLE_FILE")" -eq 0 ] && continue
+
   hyprctl keyword monitor "$MONITOR,$MODE,$POSITION,$SCALE,transform,$TRANSFORM"
 done
