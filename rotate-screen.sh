@@ -1,9 +1,9 @@
 #!/bin/bash
 
-MONITOR="eDP-1"
-MODE="preferred"
-POSITION="auto"
-SCALE="1"
+MONITOR="${MONITOR:-eDP-1}"
+MODE="${MODE:-preferred}"
+POSITION="${POSITION:-auto}"
+SCALE="${SCALE:-1}"
 
 # File to store rotation toggle state (0 = off, 1 = on)
 TOGGLE_FILE="$HOME/.config/hypr/rotation-toggle"
