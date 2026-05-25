@@ -4,7 +4,6 @@ MONITOR="${MONITOR:-eDP-1}"
 MODE="${MODE:-preferred}"
 POSITION="${POSITION:-auto}"
 SCALE="${SCALE:-1}"
-TOUCH_DEVICES="${TOUCH_DEVICES:-}"
 
 # File to store rotation toggle state (0 = off, 1 = on)
 TOGGLE_FILE="$HOME/.config/hypr/rotation-toggle"
@@ -21,11 +20,8 @@ rotate() {
 
   hyprctl eval "hl.monitor({ output = \"$MONITOR\", mode = \"$MODE\", position = \"$POSITION\", scale = \"$SCALE\", transform = $transform })"
 
-  # Rotate touch devices (semicolon-separated list)
-  IFS=';' read -ra devs <<< "$TOUCH_DEVICES"
-  for dev in "${devs[@]}"; do
-    [ -n "$dev" ] && hyprctl eval "hl.device({name = \"$dev\"}, {output = \"$MONITOR\", transform = $transform})"
-  done
+  # Rotate touch input to match display
+  hyprctl eval "hl.config({input = {touchdevice = {transform = $transform}, tablet = {transform = $transform, output = \"$MONITOR\"}}})"
 }
 
 monitor-sensor | while read -r line; do
