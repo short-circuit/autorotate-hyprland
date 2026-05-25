@@ -21,7 +21,7 @@ rotate() {
   hyprctl eval "hl.monitor({ output = \"$MONITOR\", mode = \"$MODE\", position = \"$POSITION\", scale = \"$SCALE\", transform = $transform })"
 
   # Rotate touch input to match display
-  hyprctl eval "hl.config({input = {touchdevice = {transform = $transform}, tablet = {transform = $transform, output = \"$MONITOR\"}}})"
+  hyprctl eval "hl.config({input = {touchdevice = {output = \"$MONITOR\", transform = $transform}, tablet = {transform = $transform, output = \"$MONITOR\"}}})"
 }
 
 monitor-sensor | while read -r line; do
